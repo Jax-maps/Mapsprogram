@@ -1,0 +1,50 @@
+package org.firstinspires.ftc.teamcode;
+
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+
+@TeleOp
+public class TestAcquis extends LinearOpMode{
+
+    // Declare OpMode members
+    HardwareBase robot = new HardwareBase();
+
+    @Override
+    public void runOpMode() {
+        telemetry.addData("Status", "Initialized");
+        telemetry.update();
+
+        /* Initialize the hardware variables.
+         * The init() method of the hardware class does all the work here
+         */
+        robot.init(hardwareMap);
+        
+        waitForStart();
+        
+        robot.acq2.setDirection(DcMotor.Direction.FORWARD);
+        robot.acq1.setDirection(DcMotor.Direction.FORWARD);
+        
+        // RESET ENCODERS
+        robot.acq1.setMode(DcMotor.RunMode.RESET_ENCODERS);
+        robot.acq2.setMode(DcMotor.RunMode.RESET_ENCODERS);
+
+        // run until the end of the match (driver presses STOP)
+        while (opModeIsActive()) {
+            
+            double leftpower;
+            double rightpower;
+            
+            leftpower = gamepad1.right_stick_y;
+            rightpower = gamepad1.left_stick_y;
+        
+            robot.acq1.setPower(leftpower);
+            robot.acq2.setPower(rightpower);
+        
+            telemetry.addData("Position of Extension:  ", robot.acq1.getCurrentPosition());
+            telemetry.addData("Position of Extension:  ", robot.acq2.getCurrentPosition());
+            telemetry.update();
+        }
+        
+    }
+}
